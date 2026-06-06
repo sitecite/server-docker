@@ -1,0 +1,78 @@
+const express = require('express');
+const exec_mysql = require('../gen_functions/exec_mysql');
+const crypto = require("crypto")
+const pool = require('../server');
+
+const router = express.Router();
+
+const { getHello } = require("./hello")
+router.get('/hello', getHello);
+
+const getStatus = require("./status")
+router.get('/status', getStatus);
+
+// allow cors request but only for GET
+router.use('/style', function (req, res, next) {
+    if (req.method === "GET" || req.method === "OPTIONS") {
+        // an options request might be sent by the browser to check if everything is okay?
+        res.setHeader("Access-Control-Allow-Origin", "*");
+        res.setHeader('Access-Control-Allow-Methods', '*');
+        res.setHeader("Access-Control-Allow-Headers", "*, Authorization");
+    }
+    next();
+
+});
+const { getStyle, postStyle} = require("./style")
+router.get('/style', getStyle);
+router.post('/style', postStyle);
+
+router.use('/image', function (req, res, next) {
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader('Access-Control-Allow-Methods', '*');
+    res.setHeader("Access-Control-Allow-Headers", "*, Authorization");
+    next()
+});
+const { createImage, createImageFromText } = require("./image")
+router.get('/image/:code', createImage);
+router.post('/image', createImageFromText);
+
+router.use('/fontlist', function (req, res, next) {
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader('Access-Control-Allow-Methods', '*');
+    res.setHeader("Access-Control-Allow-Headers", "*");
+    next()
+});
+const { getFonts }  = require("./fontlist")
+router.get('/fontlist', getFonts);
+
+// test.js
+router.use('/test', function (req, res, next) {
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader('Access-Control-Allow-Methods', '*');
+    res.setHeader("Access-Control-Allow-Headers", "*");
+    next()
+});
+const getTest  = require("./test")
+router.get('/test', getTest);
+
+// allow cors requests since theyre from the extension
+router.use('/token', function (req, res, next) {
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader('Access-Control-Allow-Methods', '*');
+    res.setHeader("Access-Control-Allow-Headers", "Authorization, *");
+    next()
+});
+const { createToken, validateToken } = require("./token")
+router.post("/token/create", createToken)
+router.get("/token/validate", validateToken)
+
+router.use('/shorten', function (req, res, next) {
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader('Access-Control-Allow-Methods', '*');
+    res.setHeader("Access-Control-Allow-Headers", "Authorization, *");
+    next()
+});
+const { shortenUrl } = require("./shorten")
+router.post("/shorten", shortenUrl)
+
+module.exports = router;

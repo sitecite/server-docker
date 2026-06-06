@@ -1,0 +1,157 @@
+:root {
+    --background: #f6f6f6;
+    --color: #000;
+    --font-family: sans-serif
+}
+
+body {
+    background: var(--background);
+    color: var(--color);
+    font-family: var(--font-family);
+}
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+    body {
+        margin-left: 1vw;
+        margin-right: 1vw;
+    }
+}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+    body {
+        margin-left: 10vw;
+        margin-right: 10vw;
+    }
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+    body {
+        margin-left: 20vw;
+        margin-right: 20vw;
+    }
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+    body {
+        margin-left: 25vw;
+        margin-right: 25vw;
+    }
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
+    body {
+        margin-left: 30vw;
+        margin-right: 30vw;
+    }
+}
+
+h1.title {
+    font-size: 4em;
+}
+
+.secretkeeper {
+    display: flex;
+    /* border: solid var(--color); */
+    border-top: 1px solid var(--color);
+    border-bottom: 3px solid var(--color); 
+    border-left: 1px solid var(--color);
+    border-right: 3px solid var(--color);
+    flex-wrap: nowrap;
+    flex-direction: row;
+    align-content: stretch;
+    justify-content: space-between;
+    align-items: stretch;
+}
+
+.secret {
+    font-family: monospace;
+    padding: 5px 10px;
+}
+
+.secret.hidden {
+    font-style: italic;
+}
+
+/* nicer input */
+input {
+    border-top: 1px solid var(--color);
+    border-bottom: 3px solid var(--color);
+    border-left: 1px solid var(--color);
+    border-right: 3px solid var(--color);
+    font-family: var(--font-family);
+    background: none;
+    color: var(--color);
+    padding: 5px 10px;
+}
+
+select {
+    border-top: 1px solid var(--color);
+    border-bottom: 3px solid var(--color);
+    border-left: 1px solid var(--color);
+    border-right: 3px solid var(--color);
+    font-family: var(--font-family);
+    background: none;
+    color: var(--color);
+    padding: 5px 10px;
+    /* width: 100%;
+    padding: 12px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box; */
+}
+
+button {
+    border-top: 1px solid var(--color);
+    border-bottom: 3px solid var(--color);
+    border-left: 1px solid var(--color);
+    border-right: 3px solid var(--color);
+    font-family: var(--font-family);
+    background: none;
+    color: var(--color);
+    padding: 5px 10px;
+}
+
+button:disabled {
+    background: var(--color);
+    color: var(--background);
+}
+
+button:active {
+    border: 3px solid var(--color);
+}
+
+form {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    align-content: flex-start;
+}
+
+hr {
+    border: 1px solid var(--color)
+}
+
+a {
+    text-decoration: underline 1.5px;
+    color: var(--color);
+}
+
+a:hover {
+    text-decoration: underline 2.5px;
+}
+
+kbd {
+    padding: 1px;
+    border-left: 2px solid var(--color);
+    border-right: 2px solid var(--color);
+    border-top: 1px solid var(--color);
+    border-bottom: 4px solid var(--color);
+    font-family: monospace;
+}

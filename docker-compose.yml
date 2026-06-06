@@ -1,0 +1,39 @@
+services:
+  web-app:
+    image: sitecite:latest
+    container_name: sitecite
+    ports:
+      - "9404:9404"
+    env_file:
+      - .env
+    environment:
+      - MYSQL_HOST=db
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+    restart: always
+    depends_on:
+      - db
+    volumes:
+      - setup_data:/usr/src/app/data
+      - ./config.yaml:/usr/src/app/config.yaml
+      - ./.env:/usr/src/app/.env
+      - ./whitelist.js:/usr/src/app/whitelist.js
+
+  db:
+    image: mysql:8.0
+    container_name: sitecite_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: "fkP7pZ2hD1cA5wpdzx6HI75Fli7yu9f0XQ85SLT1"
+      MYSQL_DATABASE: "citesite"
+      MYSQL_USER: "citesite"
+      MYSQL_PASSWORD: "fkP7pZ2hD1cA5wpdzx6HI75Fli7yu9f0XQ85SLT1"
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+
+volumes:
+  db_data:
+  setup_data:

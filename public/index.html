@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>sitecite</title>
+
+    <!-- Normal and sane OpenGraph -->
+    <meta property="og:title" content="try sitecite." />
+    <meta property="og:site_name" content="sitecite" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="../" />
+    <meta property="og:description" content="Select and quote with the extension! Customise the font and background and text color!" />
+    <meta property="og:image" content="./logo/sitecite_logo_compact.png" />
+    <meta property="og:image:alt" content="sitecite logo" />
+    
+    <!-- X card, ewww -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="try sitecite." />
+    <meta name="twitter:description" content="Select and quote with the extension! Customise the font and background and text color!" />
+    <meta name="twitter:image" content="./logo/sitecite_logo_compact.png" />
+    <meta name="twitter:image:alt" content="sitecite logo" />
+
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="./favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="./favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="./favicon/favicon-16x16.png">
+    <link rel="manifest" href="./favicon/site.webmanifest">
+
+    <!-- Imports -->
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/site_modules/coloris.min.css" />
+    <script src="/site_modules/coloris.min.js"></script>
+</head>
+<body>
+    <h1 class="title">sitecite.</h1>
+    <p>
+        Simple web extension to easily quote and link to websites on social media, by utilising embeds! Not only that, but it is quite customisable, with text colour, font and background all being able to be changed!
+    </p>
+
+    <p>
+        You can install it for <a href="https://addons.mozilla.org/en-GB/firefox/addon/sitecite/" target="_blank" rel="noopener noreferrer">Firefox</a>. 
+        A Chrome version is coming soon! 
+        Want to host sitecite for yourself? Be sure to check out the <a href="https://github.com/sitecite/server/" target="_blank" rel="noopener noreferrer">source code!</a>
+    </p>
+
+    <p>
+        Using sitecite means you agree to the <a href="/privacy" target="_blank" rel="noopener noreferrer">privacy policy</a> and the <a href="tos" target="_blank" rel="noopener noreferrer">terms of service</a>. 
+        These may not apply if the instance is not on the <a href="https://sitecite.dantenl.com" target="_blank" rel="noopener noreferrer">official website</a>.
+    </p>
+
+    <div id="sign-in-btns">
+        <a id="discord-login" href="/account/discord" style="display: none;">sign in with discord</a>
+        <br>
+    </div>
+
+    <form id="login-form" style="display: none;">
+        <div>
+            <label for="username">Username:</label>
+            <br>
+            <input type="text" id="username" name="username" required autocomplete="username">
+        </div>
+        <div>
+            <label for="password">Password:</label>
+            <br>
+            <input type="password" id="password" name="password" required autocomplete="current-password">
+        </div>
+        <div>
+            <br>
+            <button type="submit" value="signin">Log in</button>
+            <button type="submit" value="signup">Sign up</button>
+        </div>
+        <div id="message"></div>
+    </form>
+
+    <div id="sign-out-btns" style="display: none;">
+        <a href="/account/logout">sign out</a>
+    </div>
+
+    <div id="account-section" style="display: none;">
+        <hr>
+        <form id="color-form">
+            <div>
+
+                <label for="bg-color">Background:</label>
+                <br>
+                <input type="text" class="coloris-background" id="bg-color" name="bg-color" data-coloris>
+            </div>
+            <!-- <br> -->
+            <div>
+                <label for="color">Text:</label>
+                <br>
+                <input type="text" class="coloris-text" id="color" name="color" data-coloris>
+            </div>
+            <!-- <br> -->
+            <div>
+                <label for="font">Font:</label>
+                <br>
+                <select name="font-selector" id="font-selector"></select>
+            </div>
+            <div>
+                <br>
+                <button type="submit">Save</button>
+                <button type="reset">Reset</button>
+
+            </div>
+            <br>
+        </form>
+
+        <hr>
+
+        <p>To use the web extension, you need to provide it with an API key. You can only view this once, after which you will need to regenerate it. <b>DO NOT SHARE IT!</b></p>
+        <div id="api-key" class="secretkeeper">
+            <p class="secret hidden" id="secret">(hidden for security)</p>
+            <button class="copy-button" id="copy-button" disabled>copy</button>
+        </div>
+        <p>If you regenerate your key, you will sign out of any active web extension sessions. <a href="#" id="regenerate">Regenerate key?</a></p>
+    </div>
+    <!-- TODO: make a form; on submit update the mysql and change background and text and shit like that -->
+
+    
+    <script src="index.js"></script>
+</body>
+</html>

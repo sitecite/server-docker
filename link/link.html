@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>sitecite</title>
+
+    <!-- Normal and sane OpenGraph -->
+    <meta property="og:title" content="{host} quote" />
+    <meta property="og:site_name" content="sitecite" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="{baseUrl}/l/{code}" />
+    <meta property="og:image" content="{baseUrl}/api/image/{code}" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:alt" content="Quoted text: {text}" />
+
+    <!-- X card, ewww -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="{host} quote" />
+    <meta name="twitter:description" content="shared quotation from sitecite." />
+    <meta name="twitter:image" content="{baseUrl}/api/image/{code}" />
+    <meta name="twitter:image:alt" content="Quoted text: {text}" />
+
+    {refresh}
+
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <h1>{titleText}</h1>
+    <p>{description} <a href="{url}" rel="noopener noreferrer">{linkText}</a></p>
+</body>
+</html>

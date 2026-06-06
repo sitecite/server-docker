@@ -1,0 +1,28 @@
+{
+  "name": "sitecite",
+  "version": "1.2.0",
+  "description": "Simple web extension to easily quote and link to websites on social media, by utilising embeds! Not only that, but it is quite customisable, with text colour, font and background all being able to be changed!",
+  "main": "server.js",
+  "scripts": {
+    "dev": "nodemon server.js",
+    "start": "node server.js"
+  },
+  "keywords": [],
+  "author": "sitecite-team",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  },
+  "dependencies": {
+    "canvas": "^3.2.3",
+    "cookie-parser": "^1.4.7",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "express-rate-limit": "^8.4.1",
+    "mysql2": "^3.22.3",
+    "node": "^22.13.0",
+    "node-fetch": "^3.3.2",
+    "yaml": "^2.9.0"
+  }
+}
