@@ -7,10 +7,10 @@ services:
     env_file:
       - .env
     environment:
-      - MYSQL_HOST=db
-      - MYSQL_USER=${MYSQL_USER}
-      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
-      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_HOST=db # DO NOT CHANGE
+      - MYSQL_USER=citesite # No need to change, but you can if you like!
+      - MYSQL_PASSWORD=fkP7pZ2hD1cA5wpdzx6HI75Fli7yu9f0XQ85SLT1 # Default password, recommended to change for security
+      - MYSQL_DATABASE=citesite # No need to change, but you can if you like!
     restart: always
     depends_on:
       - db
@@ -24,7 +24,7 @@ services:
     image: mysql:8.0
     container_name: sitecite_db
     restart: always
-    # WHEN UPDATING MYSQL CREDENTIALS MAKE SURE TO ALSO UPDATE THEM IN THE .ENV FILE!!!
+    # WHEN UPDATING MYSQL CREDENTIALS MAKE SURE TO ALSO UPDATE THEM ABOVE!!
     environment:
       MYSQL_ROOT_PASSWORD: "fkP7pZ2hD1cA5wpdzx6HI75Fli7yu9f0XQ85SLT1" # Default password, recommended to change for security
       MYSQL_DATABASE: "citesite" # No need to change, but you can if you like!
