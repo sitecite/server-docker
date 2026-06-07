@@ -1,19 +1,20 @@
 # Use an official Node.js runtime as the base image
-FROM node:20-alpine
+FROM node:20-slim
 
 # Set the working directory inside the container
 WORKDIR /usr/src/app
 
 # Install system dependencies required to compile the 'canvas' package
-RUN apk add --no-cache \
+RUN apt-get update && apt-get install -y --no-install-recommends \
     python3 \
     make \
     g++ \
-    cairo-dev \
-    jpeg-dev \
-    pango-dev \
-    giflib-dev \
-    pixman-dev
+    libcairo2-dev \
+    libjpeg-dev \
+    libpango1.0-dev \
+    libgif-dev \
+    librsvg2-dev \
+    && rm -rf /var/lib/apt/lists/*
 
 # Copy package.json and package-lock.json first
 COPY package*.json ./
