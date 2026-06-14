@@ -33,7 +33,8 @@
     <script src="/site_modules/coloris.min.js"></script>
 </head>
 <body>
-    <h1 class="title">sitecite.</h1>
+    <!-- If you're interested in the source code, why not check out the github? github.com/sitecite -->
+    <h1 class="title">sitecite</h1>
     <p>
         Simple web extension to easily quote and link to websites on social media, by utilising embeds! Not only that, but it is quite customisable, with text colour, font and background all being able to be changed!
     </p>
@@ -49,8 +50,16 @@
         These may not apply if the instance is not on the <a href="https://sitecite.dantenl.com" target="_blank" rel="noopener noreferrer">official website</a>.
     </p>
 
+    <div>
+        <button onclick="window.open('https://addons.mozilla.org/en-GB/firefox/addon/sitecite/', '_blank');">download for firefox</button>
+        <button onclick="window.open('https://chromewebstore.google.com/search/sitecite', '_blank');">download for chrome</button>
+    </div>
+    <br>
+
+
     <div id="sign-in-btns">
         <a id="discord-login" href="/account/discord" style="display: none;">sign in with discord</a>
+        <a id="google-login" href="/account/google" style="display: none;">sign in with google</a>
         <br>
     </div>
 
@@ -86,13 +95,11 @@
                 <br>
                 <input type="text" class="coloris-background" id="bg-color" name="bg-color" data-coloris>
             </div>
-            <!-- <br> -->
             <div>
                 <label for="color">Text:</label>
                 <br>
                 <input type="text" class="coloris-text" id="color" name="color" data-coloris>
             </div>
-            <!-- <br> -->
             <div>
                 <label for="font">Font:</label>
                 <br>
@@ -115,9 +122,28 @@
             <button class="copy-button" id="copy-button" disabled>copy</button>
         </div>
         <p>If you regenerate your key, you will sign out of any active web extension sessions. <a href="#" id="regenerate">Regenerate key?</a></p>
-    </div>
-    <!-- TODO: make a form; on submit update the mysql and change background and text and shit like that -->
 
+        <hr>
+
+        <p>Here you can view some links you recently shortened, or you can remove them.</p>
+        <div id="link-grid" class="item-grid">
+            <!-- all urls -->
+            <div class="item" id="intro-item">
+                <div class="item-text">(Quote and shorten using the extension, and it will show up here!)</div>
+                <div class="item-management">
+                    sitecite
+                    <div>
+                        <button disabled>copy</button>
+                        <button disabled>&times;</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div style="display: flex; justify-content: center; margin-top: 0.5rem;">
+            <button id="load-more-button">Load more</button>
+        </div>
+    </div>
     
     <script src="index.js"></script>
 </body>

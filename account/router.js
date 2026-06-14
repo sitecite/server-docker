@@ -43,6 +43,9 @@ router.use(async (req, res, next) => {
 const oAuthDiscord = require("./discord")
 router.get("/discord", oAuthDiscord)
 
+const oAuthGoogle = require("./google")
+router.get("/google", oAuthGoogle)
+
 const { signIn, signUp }= require("./login")
 router.post("/signin", signIn)
 router.post("/signup", signUp)

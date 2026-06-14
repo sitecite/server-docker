@@ -14,11 +14,20 @@ const getHello = async (req, res) => {
         discordEnabled = true
     }
 
+    var googleEnabled = false
+    if (
+        process.env.GOOGLE_ID 
+        && process.env.GOOGLE_SECRET
+        && process.env.GOOGLE_URL
+    ) {
+        googleEnabled = true
+    }
+
     const yamlConfig = await fs.readFileSync("./config.yaml", 'utf8')
     const username_accounts = yaml.parse(yamlConfig).username_accounts
 
     const helloJSON = {
-        google: false,
+        google: googleEnabled,
         discord: discordEnabled,
         username: username_accounts
     }

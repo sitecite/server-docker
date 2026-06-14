@@ -8,15 +8,12 @@ const yaml = require('yaml');
 require('dotenv').config()
 
 async function redirectUser(req, res) {
-    console.log(req.params.code)
-
     if(!req.params) {
-        res.status(400).json(
-            {
-                success: false,
-                message: "Could not find link. (no param?)"
-            }
-        )
+        const filePath = path.join(process.cwd(), '/public/404.html');
+        let content = await fs.readFileSync(filePath, 'utf8');
+        res.setHeader('Content-Type', 'text/html');
+        res.status(404).send(content);
+
         return
     }
 
@@ -24,7 +21,7 @@ async function redirectUser(req, res) {
 
     if (code.length < 5 || code.length > 8) {
         const filePath = path.join(process.cwd(), '/public/404.html');
-        let content = await fs.readFileSync(filePath, 'utf8');
+        let content = await fs.readFileSync(filePath, 'utf8');        
         res.setHeader('Content-Type', 'text/html');
         res.status(404).send(content);
 

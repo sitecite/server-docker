@@ -55,6 +55,14 @@ router.use('/test', function (req, res, next) {
 const getTest  = require("./test")
 router.get('/test', getTest);
 
+// get recently generated urls
+const { getLinks }  = require("./fetchlink")
+router.get('/getlinks', getLinks);
+
+// remove a specific url
+const { removeLink }  = require("./removeurl")
+router.post('/removeurl', removeLink);
+
 // allow cors requests since theyre from the extension
 router.use('/token', function (req, res, next) {
     res.setHeader("Access-Control-Allow-Origin", "*");

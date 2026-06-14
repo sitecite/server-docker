@@ -1,10 +1,3 @@
-// TODO:
-// allow customisation of site
-// show created urls
-
-// if token? show extra things
-
-
 /**
  * Fetches from a link using a GET request, with built-in error handling
  * @param {string} url The url to fetch from
@@ -133,10 +126,13 @@ async function main() {
 	const hello = await fetchUrl("../api/hello")
 	document.getElementById("copy-button").disabled = true
 	if(hello.success) {
-
 		// configure what things show up
 		if (hello.data.discord) {
 			document.getElementById("discord-login").style.display = "block"
+		}
+
+		if (hello.data.google) {
+			document.getElementById("google-login").style.display = "block"
 		}
 
 		if (hello.data.username) {
@@ -144,24 +140,33 @@ async function main() {
 		}
 	}
 
+	// check if user is signed in
 	const status = await fetchUrl("../api/status")
 	if (status.success) {
+		// user is signed in
 		document.getElementById("account-section").style.display = "block"
 		document.getElementById("sign-in-btns").style.display = "none"
 		document.getElementById("login-form").style.display = "none"
 		document.getElementById("sign-out-btns").style.display = "block"
-	}
-
-	if (status.data) {
-		// user is signed in
-		// fetch styles
+		
+		// load styles user chose
 		await fetchStyles()
 
-		// console.log(styles)
+		// load recently generated urls
+		console.log("loading recent urls")
+		await loadUrls()
 	}
-}
 
-main()
+	console.log("%cHey there!", "font-size: 2em")
+	console.log(`If you're asked to share this for a support request, please share the following data:
+
+User ID: ${status.data.id}
+Instance: ${window.location.origin}
+
+If you can't change the background and/or text colour, you can fill in resetStyles() and press enter!`
+	)
+
+}
 
 //* Coloris setup
 document.querySelectorAll('.coloris-text').forEach(input => {
@@ -290,4 +295,130 @@ document.getElementById("login-form").addEventListener("submit", async input => 
 	}
 })
 
-// document.getElementById("secret").textContent = '•'.repeat(32)
+var offset = 0
+async function loadUrls() {
+	// define the offset, if it hasn't already been defined
+	// this is used for the "load more" button
+	// fetch 10 most recent shortened links
+	const recentUrls = await fetchUrl("/api/getlinks?offset="+offset)
+
+	if(recentUrls.data.length) {
+		// if there are any urls, it means we can hide the default prompt
+		document.getElementById("intro-item").style.display = "none"
+	}
+
+	if(!recentUrls.success) {
+		// something went wront
+		alert("Could not fetch URLS.")
+		console.error(recentUrls)
+		return
+	}
+
+	// add urls to the document
+	recentUrls.data.forEach(url => {
+		const urlObj = new URL(url.link)
+		const host = urlObj.host
+		document.getElementById("link-grid").innerHTML += `
+			<div class="item">
+                <div class="item-text">${url.text}</div>
+                <div class="item-management">
+                    <a href="/l/${url.code}" target="_blank" rel="noopener noreferrer">${host}</a>
+                    <div>
+                        <button class='_copyUrl' data-code='${url.code}'>copy</button>
+                        <button class='_deleteUrl' data-code='${url.code}'>&times;</button>
+                    </div>
+                </div>
+            </div>
+		`
+	});
+
+	// add 10 to offset
+	offset += 10
+
+	if(recentUrls.data.length < 10) {
+		// if less than 10 urls loaded, it means user has received all urls
+		// disable button
+		document.getElementById("load-more-button").disabled = true
+	}
+
+	// add listener for the copy
+	document.querySelectorAll("._copyUrl").forEach(copyButton => {
+		copyButton.addEventListener("click", (event) => copyUrl(event))
+	});
+
+	// add listener for the removal
+	document.querySelectorAll("._deleteUrl").forEach(deleteButton => {
+		deleteButton.addEventListener("click", (event) => removeUrl(event))
+	});
+
+}
+
+document.getElementById("load-more-button").addEventListener("click", loadUrls)
+
+// handle copy url
+function copyUrl(button) {
+	// get code from the dataset
+	const code = button.srcElement.dataset.code
+
+	// craft the redirection url
+	const currentUrl = new URL(window.location.href)
+	const redirectUrl = currentUrl.origin + "/l/" + code
+	// copy this to clipboard
+	try {
+		navigator.clipboard.writeText(redirectUrl)
+
+		button.srcElement.textContent = "done"
+		// rest to regular text after 2.5s
+		setTimeout(() => {
+			button.srcElement.textContent = "copy"
+		}, 2500);
+	} catch (e) {
+		// for some reason, can't copy
+		alert("Could not copy key to your clipboard!")
+		console.error(e)
+	}
+}
+
+// handle removing a url
+async function removeUrl(button) {
+	// get code from the dataset
+	const code = button.srcElement.dataset.code
+
+	// try and remove it
+	const removeRequest = await postUrl("/api/removeurl", {
+		code: code
+	})
+
+	console.log(removeRequest)
+
+	if(!removeRequest.success) {
+		// something went wrong
+		alert("Error: "+removeRequest.message)
+		return
+	}
+
+	// remove one from offset, so that nothing should get skipped
+	offset -= 1
+
+	button.srcElement.textContent = "done"
+	// rest to regular text after 2.5s
+	setTimeout(() => {
+		// remove the entire item
+		button.srcElement.closest(".item").remove()
+
+	}, 2500);
+}
+
+/**
+ * If you fucked up, you can temporary change the background and text colour to readable values.
+ */ 
+function resetStyles() {
+	// reset styles for the silly people who fucked up and made background and text the same
+	document.documentElement.style.setProperty('--background', "#fff");
+	document.documentElement.style.setProperty('--color', "#000");
+	console.log("✅ Background and text colour reset; please choose new values and click 'Save'. These changes are temporary.")
+}
+
+
+// main function
+main()

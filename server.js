@@ -17,9 +17,6 @@ const http = require('http').createServer(app);
 
 require('dotenv').config()
 
-// app.enable('trust proxy')
-
-
 async function refreshSimple() {
     await pool
     refresh.tokenRefresh(pool)
@@ -42,10 +39,16 @@ async function main() {
 
     // various endpoints
     // secret cookies yum
-    // generate a random string as a secret
-    const randomString = crypto.randomBytes(32).toString('hex').slice(0, 32);
-    const randomStringHash = crypto.createHash('sha256').update(randomString).digest('hex')
-    app.use(cookieParser(randomStringHash));
+    if(process.env.COOKIE_SECRET) {
+        // use a preset cookie secret if there is one
+        app.use(cookieParser(process.env.COOKIE_SECRET));
+    } else {
+        // no preset cookie
+        // generate a random string as a secret
+        const randomString = crypto.randomBytes(32).toString('hex').slice(0, 32);
+        const randomStringHash = crypto.createHash('sha256').update(randomString).digest('hex')
+        app.use(cookieParser(randomStringHash));
+    }
 
     // public directory
     app.use(express.static(__dirname + '/public', { extensions: ['html'] }));
