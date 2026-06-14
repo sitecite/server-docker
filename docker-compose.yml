@@ -1,6 +1,6 @@
 services:
   web-app:
-    image: ghcr.io/sitecite/sitecite:v1.0
+    image: ghcr.io/sitecite/sitecite:v2.0
     container_name: sitecite
     ports:
       - "9404:9404" # Port that sitecite runs on, default is 9404
