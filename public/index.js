@@ -301,12 +301,7 @@ async function loadUrls() {
 	// this is used for the "load more" button
 	// fetch 10 most recent shortened links
 	const recentUrls = await fetchUrl("/api/getlinks?offset="+offset)
-
-	if(recentUrls.data.length) {
-		// if there are any urls, it means we can hide the default prompt
-		document.getElementById("intro-item").style.display = "none"
-	}
-
+	
 	if(!recentUrls.success) {
 		// something went wront
 		alert("Could not fetch URLS.")
@@ -314,8 +309,13 @@ async function loadUrls() {
 		return
 	}
 
+	if(recentUrls.data.links.length) {
+		// if there are any urls, it means we can hide the default prompt
+		document.getElementById("intro-item").style.display = "none"
+	}
+
 	// add urls to the document
-	recentUrls.data.forEach(url => {
+	recentUrls.data.links.forEach(url => {
 		const urlObj = new URL(url.link)
 		const host = urlObj.host
 		document.getElementById("link-grid").innerHTML += `
@@ -335,9 +335,11 @@ async function loadUrls() {
 	// add 10 to offset
 	offset += 10
 
-	if(recentUrls.data.length < 10) {
-		// if less than 10 urls loaded, it means user has received all urls
-		// disable button
+	console.log(recentUrls.data)
+
+	if(recentUrls.data.total <= offset) {
+		// if there are less than or exactly offset amount of links remaining,
+		// then no extra links are there, meaning the disable button should be disabled
 		document.getElementById("load-more-button").disabled = true
 	}
 

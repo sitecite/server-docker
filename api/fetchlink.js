@@ -49,10 +49,15 @@ const getLinks = async (req, res) => {
         LIMIT 10 OFFSET ?
         `, [id, offset], pool)
 
+    const linkCountQuery = await exec_mysql.executeQuery(null, `SELECT COUNT(code) AS link_count FROM links WHERE user_id = ?`, [id], pool)
+
     res.status(200).json({
         success: true,
         message: "it works!",
-        data: linkQuery
+        data: {
+            links: linkQuery,
+            total: linkCountQuery[0].link_count
+        }
     })
     return
 };

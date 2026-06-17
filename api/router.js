@@ -5,6 +5,12 @@ const pool = require('../server');
 
 const router = express.Router();
 
+router.use('/hello', function (req, res, next) {
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader('Access-Control-Allow-Methods', '*');
+    res.setHeader("Access-Control-Allow-Headers", "*");
+    next()
+});
 const { getHello } = require("./hello")
 router.get('/hello', getHello);
 
@@ -52,8 +58,17 @@ router.use('/test', function (req, res, next) {
     res.setHeader("Access-Control-Allow-Headers", "*");
     next()
 });
-const getTest  = require("./test")
-router.get('/test', getTest);
+
+router.get('/test', (req, res) => {
+    // endpoint ios d
+    res.status(299).json({
+        message: "Endpoint deprecated - avoid usage.",
+        success: true,
+        data: {
+            newUrl: "/api/hello"
+        }
+    })
+});
 
 // get recently generated urls
 const { getLinks }  = require("./fetchlink")

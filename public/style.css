@@ -29,11 +29,6 @@ body {
         margin-left: 1vw;
         margin-right: 1vw;
     }
-
-    /* resize items as to beter fit */
-    /* .item-grid .item {
-        max-width: calc(100% - 10px) !important;
-    } */
 }
 
 /* small devices (portrait tablets and large phones, 600px and up) */
@@ -42,11 +37,6 @@ body {
         margin-left: 10vw;
         margin-right: 10vw;
     }
-
-    /* resize items as to beter fit  - 1 item*/
-    /* .item-grid .item {
-        max-width: calc(100% - 10px) !important;
-    } */
 }
 
 /* medium devices (landscape tablets, 768px and up) */
@@ -55,11 +45,6 @@ body {
         margin-left: 20vw;
         margin-right: 20vw;
     }
-
-    /* resize items as to beter fit - 2 items */
-    /* .item-grid .item {
-        max-width: calc(50% - 10px) !important;
-    } */
 }
 
 /* large devices (laptops/desktops, 992px and up) */
@@ -68,11 +53,6 @@ body {
         margin-left: 20vw;
         margin-right: 20vw;
     }
-
-    /* resize items as to beter fit - 2 items */
-    /* .item-grid .item {
-        max-width: calc(50% - 10px) !important;
-    } */
 }
 
 /* extra large devices (large laptops and desktops, 1200px and up) */
@@ -81,11 +61,6 @@ body {
         margin-left: 25vw;
         margin-right: 25vw;
     }
-
-    /* resize items as to beter fit - 4 items */
-    /* .item-grid .item {
-        max-width: calc(33.33% - 10px) !important;
-    } */
 }
 
 h1.title {
@@ -246,7 +221,20 @@ kbd {
 /* Management area stays at bottom */
 .item-grid .item .item-management {
     margin-top: 3px;
-    display: flex;
+    display: inline-flex;
     justify-content: space-between;
     align-items: center;
+}
+
+.item-grid .item .item-management a {
+    /* add ellipsis to long urls */
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.item-grid .item .item-management div {
+    /* make the copy and close button inline */
+    display: inline-flex;
+    gap: 2px;
 }
