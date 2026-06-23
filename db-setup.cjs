@@ -1,8 +1,8 @@
 const mysql = require("mysql2/promise")
 const exec_mysql = require("./gen_functions/exec_mysql.js")
 const { styleText } = require('node:util');
-const { exit } = require("node:process");
-require('dotenv').config()
+const logger = require("./gen_functions/logger.js")
+require('dotenv').config({ quiet: true})
 
 const pool = mysql.createPool({
     host: process.env.MYSQL_HOST,
@@ -22,20 +22,25 @@ const current_version = 2
 
 function setup() {
     return new Promise(async (resolve, reject) => {   
-        console.log("\n" + styleText("bgBlue", "Setting up database...") + "\n")
+        logger.force_info("Setting up database...")
         con = await pool.getConnection()
     
+        // try and get connection
         if (!con) {
-            console.error(styleText("red", "Could not establish a connection with the pool: "), err)
+            logger.fatal("Could not establish a connection with the pool:", err)
             throw new Error('Failed to get connection from pool');
         }
     
+        // create main database
         await exec_mysql.executeQuery(con,
             `CREATE DATABASE IF NOT EXISTS \`${process.env.MYSQL_DATABASE}\`;`)
     
+        // use said database for all following queries
+        // can not do that in same request; due to security policies only one request at a time
         await exec_mysql.executeQuery(con,
             `USE \`${process.env.MYSQL_DATABASE}\`;`)
     
+        // create table for users
         await exec_mysql.executeQuery(con, `
             CREATE TABLE IF NOT EXISTS users (
                 id INT AUTO_INCREMENT UNIQUE,
@@ -48,7 +53,8 @@ function setup() {
     
                 PRIMARY KEY(id)
             );`)
-        // other db queries
+
+        // create table for fonts, bg color and text color
         await exec_mysql.executeQuery(con,
             `CREATE TABLE IF NOT EXISTS user_customisation (
                 user_id INT,
@@ -60,6 +66,7 @@ function setup() {
             )`
         )
     
+        // create table for account tokens
         await exec_mysql.executeQuery(con,
             `CREATE TABLE IF NOT EXISTS user_web_tokens (
                 user_id INT NOT NULL,
@@ -70,6 +77,7 @@ function setup() {
             )`
         )
     
+        // create table for api keys (used by the extension)
         await exec_mysql.executeQuery(con,
             `CREATE TABLE IF NOT EXISTS user_ext_tokens (
                 user_id INT NOT NULL PRIMARY KEY,
@@ -78,6 +86,7 @@ function setup() {
             )`
         )
         
+        // create table for generated urls and accompanying text
         await exec_mysql.executeQuery(con,
             `CREATE TABLE IF NOT EXISTS links (
                 user_id INT NOT NULL,
@@ -90,7 +99,8 @@ function setup() {
             )`
         )
 
-
+        // create a table to store the current version of the mysql database
+        // if any thing requires adding new columns, this is how it is done
         await exec_mysql.executeQuery(con,
             `CREATE TABLE IF NOT EXISTS config (
                 id INT PRIMARY KEY DEFAULT 1,
@@ -98,12 +108,11 @@ function setup() {
             )`, 
         )
 
-
+        // add the current version number
         await exec_mysql.executeQuery(con,
             `INSERT INTO config (id, version_number) VALUES (1, ?)
             ON DUPLICATE KEY UPDATE id = ?;`, [current_version, 1]
         )
-
 
         // check current iteration of database 
         // depending on what version it is, we may need to add extra tables
@@ -120,11 +129,9 @@ function setup() {
         await con.release()
         await pool.end()
     
-        console.log("\n" + styleText("bgGreen", "Database set up!") + "\n")
+        logger.force_success("Database set up! \n")
         resolve()
     })
 }
 
 module.exports = { setup }
-
-// return

@@ -102,7 +102,6 @@ async function fetchStyles() {
 		fontSelector.add(option)
 	})
 
-	// console.log(sel)
 	const fontFile = new FontFace(
 		styles.data.font,
 		`url(../fonts/${selectedFontFileRegular})`
@@ -153,7 +152,6 @@ async function main() {
 		await fetchStyles()
 
 		// load recently generated urls
-		console.log("loading recent urls")
 		await loadUrls()
 	}
 
@@ -335,8 +333,6 @@ async function loadUrls() {
 	// add 10 to offset
 	offset += 10
 
-	console.log(recentUrls.data)
-
 	if(recentUrls.data.total <= offset) {
 		// if there are less than or exactly offset amount of links remaining,
 		// then no extra links are there, meaning the disable button should be disabled
@@ -390,8 +386,6 @@ async function removeUrl(button) {
 	const removeRequest = await postUrl("/api/removeurl", {
 		code: code
 	})
-
-	console.log(removeRequest)
 
 	if(!removeRequest.success) {
 		// something went wrong

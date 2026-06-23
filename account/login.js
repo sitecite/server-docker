@@ -4,14 +4,17 @@ const crypto = require('crypto');
 const permittedAccounts = require("../whitelist");
 const fs = require('fs');
 const yaml = require("yaml");
-require('dotenv').config()
+const logger = require("../gen_functions/logger")
+require('dotenv').config({ quiet: true})
 
 const signIn = async (req, res) => {
     // handle a sign in request
 
+    // fetch the yaml config
     const { username, password } = req.body;
     const yamlConfig = await fs.readFileSync("./config.yaml", 'utf8')
 
+    // check if username accounts are enabled
     const username_accounts = yaml.parse(yamlConfig).username_accounts
     
     if (!username_accounts === true) {
@@ -41,7 +44,8 @@ const signIn = async (req, res) => {
                 success: false,
                 message: "Your account is not whitelisted! Contact the webmaster if you believe this to be a mistake."
             })
-            console.log("User tried to sign up with username, but is not whitelisted! Username:", username)
+
+            logger.log("[WHITELIST] User tried to sign up/sign in with username, but is not whitelisted. Username:", username)
             return
         }
     }
@@ -49,12 +53,14 @@ const signIn = async (req, res) => {
     const passwordSalt = password + username
     const passwordHash = crypto.createHash('sha256').update(passwordSalt).digest('hex').slice(0, 128)
 
+    // try and see if username and password exists
     const user = await exec_mysql.executeQuery(null, `
             SELECT id FROM users WHERE username = ? AND password = ?   
         `, [username, passwordHash], pool)
 
+    // it does not if the return array is 0 long
     if(!user.length) {
-        res.status(400).json({
+        res.status(401).json({
             success: false,
             message: "Invalid username or password.",
             data: {}
@@ -67,6 +73,7 @@ const signIn = async (req, res) => {
     // now + 1 hour 
     const randomString = crypto.randomBytes(32).toString('hex').slice(0, 32);
     const randomStringHash = crypto.createHash('sha256').update(randomString).digest('hex')
+    // store token
     await exec_mysql.executeQuery(null, `
             INSERT INTO user_web_tokens (user_id, token, expire)
             VALUES (?, ?, ?)
@@ -80,9 +87,11 @@ const signIn = async (req, res) => {
         // 1 hour
     });
 
+    logger.log("[ACCOUNT] User signed in using username. IP:", req.ip, "Account ID:", user[0].id)
+
     res.status(200).json({
         success: true,
-        message: "signed in!",
+        message: "Signed in!",
     })
     return
 
@@ -145,7 +154,7 @@ const signUp = async (req, res) => {
                 success: false,
                 message: "Your account is not whitelisted! Contact the webmaster if you believe this to be a mistake."
             })
-            console.log("User tried to sign up with username, but is not whitelisted! Username:", username)
+            logger.log("[WHITELIST] User tried to sign up/sign in with username, but is not whitelisted. Username:", username)
             return
         }
     }
@@ -172,11 +181,13 @@ const signUp = async (req, res) => {
     const passwordSalt = password + username
     const passwordHash = crypto.createHash('sha256').update(passwordSalt).digest('hex').slice(0, 128)
 
+    // make sql request
     await exec_mysql.executeQuery(null, `
 			INSERT INTO users (username, password, creation_date)
             VALUES (?, ?, ?)
 		`, [username, passwordHash, Math.round(Date.now() / 1000)], pool)
 
+    // get user id of newly created account
     const user = await exec_mysql.executeQuery(null, `
             SELECT id FROM users WHERE username = ?    
         `, [username], pool)
@@ -199,6 +210,8 @@ const signUp = async (req, res) => {
         // 1 hour
     });
 
+    logger.log("[ACCOUNT] User created an account and signed in using username. IP:", req.ip, "Account ID:", user[0].id)
+    
     res.status(200).json({
         success: true,
         message: "signed in!",

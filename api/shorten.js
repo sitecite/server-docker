@@ -2,6 +2,7 @@ const express = require('express');
 const exec_mysql = require('../gen_functions/exec_mysql');
 const crypto = require("crypto")
 const pool = require('../server');
+const logger = require("../gen_functions/logger")
 
 function randomAlphanumeric(length) {
     const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -59,7 +60,7 @@ async function shortenUrl(req, res) {
     const stringSearch = await exec_mysql.executeQuery(null, "SELECT code FROM links WHERE code = ?", [randomString], pool)
     if(stringSearch.length) {
         // somehow we created a duplicate!
-        console.warn("Duplicate key generated.")
+        logger.warn("Duplicate key generated. It's your lucky day if you ever see this appear!")
         randomString = randomAlphanumeric(8).toLowerCase()
     }
 
@@ -67,6 +68,8 @@ async function shortenUrl(req, res) {
         INSERT INTO links (user_id, code, text, link, creation_date)
         VALUES (?, ?, ?, ?, ?)
     `, [id, randomString, text, link, Math.round(Date.now() / 1000)], pool)
+
+    logger.log("[LINK] Link created. IP:", req.ip, "User ID:", id, "Link ID:", randomString)
 
     res.status(200).json({
         success: true,

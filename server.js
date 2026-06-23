@@ -8,14 +8,14 @@ const fs = require('fs');
 const refresh = require("./gen_functions/refresh")
 const crypto = require('crypto');
 const yaml = require("yaml")
+const logger = require("./gen_functions/logger.js")
 
 const dbSetup = require("./db-setup.cjs")
 
 const app = express();
 const http = require('http').createServer(app);
 
-
-require('dotenv').config()
+require('dotenv').config({ quiet: true})
 
 async function refreshSimple() {
     await pool
@@ -30,12 +30,13 @@ setInterval(async function () {
 // repeat every 15 minutes
 
 async function main() {
-    // init everything, in order
+    // * init everything, in order
 
     // set up database first
     await dbSetup.setup()
 
-    console.log(styleText("green", `Connected to MySQL database at ${process.env.MYSQL_HOST}:${process.env.MYSQL_PORT} as ${process.env.MYSQL_USER}`))
+    logger.force_info("Starting up server...")
+    logger.force_success(`Connected to MySQL database at ${process.env.MYSQL_HOST}:${process.env.MYSQL_PORT} as ${process.env.MYSQL_USER}`)
 
     // various endpoints
     // secret cookies yum
@@ -43,8 +44,9 @@ async function main() {
         // use a preset cookie secret if there is one
         app.use(cookieParser(process.env.COOKIE_SECRET));
     } else {
-        // no preset cookie
+        // no preset cookie secret
         // generate a random string as a secret
+        // what this means is that every time the server restart, users are signed out again. this isn't that much of a problem as users can not be logged in for more than an hour
         const randomString = crypto.randomBytes(32).toString('hex').slice(0, 32);
         const randomStringHash = crypto.createHash('sha256').update(randomString).digest('hex')
         app.use(cookieParser(randomStringHash));
@@ -73,7 +75,7 @@ async function main() {
         limit: 10,
         handler: (req, res) => {
             res.status(429).json({ success: false, message: "You have been rate limited" });
-            console.warn("User got ratelimited.")
+            logger.warn("User got ratelimited. IP:", req.ip)
             return
             // throw new Error("You have been rate limited!")
         },
@@ -110,7 +112,8 @@ async function main() {
     const port = yaml.parse(yamlConfig).port
 
     http.listen(port, async () => {
-        console.log("\n" + styleText("bgGreen", `Server is listening on port ${port}`));
+        console.log()
+        logger.force_success(`Server is listening on port ${port}`)
     });
 }
 
@@ -118,10 +121,9 @@ async function main() {
 // its nicer if i actually properly close connection
 process.on("exit", function () {
     pool.end((err) => {
-        if (err) console.error('Error closing pool:', err)
+        if (err) logger.force_error('Error shutting down: error closing pool:', err)
     })
-    console.log("Connection to database closed")
-    console.log("\n" + styleText("bgRed", "Webserver terminated") + "\n")
+    logger.force_warn("Shut down: connection to database closed")
 });
 
 // catching signals and do something before exit
@@ -130,7 +132,6 @@ process.on("exit", function () {
 ].forEach(function (sig) {
     process.on(sig, function () {
         terminator(sig);
-        console.log('signal: ' + sig);
     });
 });
 
@@ -138,7 +139,7 @@ function terminator(sig) {
     if (typeof sig === "string") {
         // if any async functions need to be done, they can be done here
         // if not, call clean exit
-        console.log('\n' + styleText('red', `Received ${sig} - terminating webserver`) + "\n");
+        logger.force_warn(`Shut down: received ${sig} - terminating webserver` + "\n");
         process.exit(1);
     }
 }

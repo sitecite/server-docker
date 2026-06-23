@@ -6,11 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Privacy Policy | sitecite</title>
 
-    <!-- Normal and sane OpenGraph -->
+    <!-- OpenGraph -->
     <meta property="og:title" content="privacy policy" />
     <meta property="og:site_name" content="sitecite" />
     <meta property="og:type" content="website" />
-    <meta property="og:description" content="sitecite's privacy policy. last update: 2026-6-1" />
+    <meta property="og:description" content="sitecite's privacy policy. last update: 2026-06-18" />
 
     <!-- Favicon -->
     <link rel="apple-touch-icon" sizes="180x180" href="./favicon/apple-touch-icon.png">
@@ -18,39 +18,238 @@
     <link rel="icon" type="image/png" sizes="16x16" href="./favicon/favicon-16x16.png">
     <link rel="manifest" href="./favicon/site.webmanifest">
 
-    <!-- Imports -->
-    <link rel="stylesheet" href="style.css">
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="../style.css">
 </head>
 
 <body>
     <h1>Privacy Policy</h1>
-    <p><strong>Last updated:</strong> 2026-6-1</p>
+    <p><strong>Last updated:</strong> 2026-06-18</p>
 
+    <hr>
     <p>
-        Welcome to sitecite! In this document we lay out how your data is handled on the official sitecite instance at sitecite.dantenl.com. By default, on self-hosted instances this should work the same, but we can not guarantee that. The privacy policy applies to both sitecite.dantenl.com as well as the official extension for Firefox and Chrome.
-    </p>
-
-    <h2>1. The data we store</h2>
-    <p>
-        All data we store is provided by you, the user. We do not use analytics. Data you provide includes, but is not limited to:
+        Changes since the previous version (2026-06-01)
     </p>
     <ul>
-        <li>links to websites that are shortened</li>
-        <li>quoted text</li>
-        <li>your customisation options (background, font and text colour)</li>
-        <li>a username and a salted hash of your password, if provided</li>
-        <li>your Discord account ID or Google account ID</li>
+        <li>added a clear disclaimer that this policy does not apply to self‑hosted or third‑party instances</li>
+        <li>added “Who we are” section identifying the data controller</li>
+        <li>added further clarity on the data we store, including extension behaviour</li>
+        <li>added cookies section (HTTPS‑signed session cookies, one‑hour maximum)</li>
+        <li>added further clarity regarding the use of third‑party sign‑ins (Google and Discord), with specific Google API data
+            usage details</li>
+        <li>added service providers section (Cloudflare)</li>
+        <li>added legal basis for processing</li>
+        <li>added data retention details</li>
+        <li>added your rights (access, erasure, portability, etc.)</li>
+        <li>added data security statement</li>
+        <li>added international transfers section (UK hosting)</li>
+        <li>added children’s privacy statement</li>
+        <li>added how we will notify you of changes to this policy</li>
+        <li>fixed typographical issues and improved readability throughout</li>
+    </ul>
+    <hr>
+
+    <p>
+        Welcome to sitecite! In this document we lay out how your data is handled on the official sitecite instance
+        at <strong>sitecite.dantenl.com</strong>. By default, self‑hosted instances should work the same way, but we
+        cannot guarantee that. This privacy policy applies to the official sitecite instance, as well as to the
+        official sitecite browser extension for Firefox and Chrome.
+    </p>
+
+    <p>
+        sitecite is an open‑source project. You can review the source code on
+        <a href="https://github.com/sitecite" target="_blank">GitHub</a>.
+    </p>
+
+    <h2>1. Who we are</h2>
+    <p>
+        sitecite is operated by <strong>Dante</strong>.
+        You can contact me at <strong>sitecite@dantenl.com</strong>.
+        For the data protection purposes, I am the data controller.
+    </p>
+
+    <h2>2. The data we store</h2>
+    <p>
+        All personal data we store is either provided directly by you or received from a third‑party sign‑in
+        service at your direction. We do not use analytics. The data you provide (or that we receive) includes,
+        but is not limited to:
+    </p>
+    <ul>
+        <li>links to websites that you shorten</li>
+        <li>text that you quote</li>
+        <li>your customisation options (background, font, and text colour)</li>
+        <li>a username and a salted hash of your password, if you choose to create a sitecite account with a password
+        </li>
+        <li>your Discord account ID or Google account ID, but only if you sign in using that service (see Section 4)
+        </li>
+    </ul>
+    <p>
+        <strong>Browser extension:</strong> The official extension sends the URL of the page you want to shorten
+        and any text you quote to our servers. It does <em>not</em> collect your browsing history, search queries,
+        or any information from pages where you haven't clicked the extension.
+    </p>
+
+    <p>We never sell, rent, or trade your personal data to third parties.</p>
+
+    <h2>3. Cookies</h2>
+    <p>
+        We use strictly necessary cookies to keep you signed in. These are HTTPS‑signed cookies that last for a
+        maximum of one hour. We do not use cookies for tracking or advertising, and no third‑party cookies are
+        placed by our service.
+    </p>
+
+    <h2>4. Third‑party sign‑in services</h2>
+
+    <h3>Google Sign‑In</h3>
+    <p>
+        When you sign in with your Google account, sitecite accesses the Google API Services to retrieve
+        <strong>only your Google account ID</strong> – a unique number generated by Google.
+        We do <em>not</em> access your name, email address, profile picture, contacts, or any other
+        Google user data.
+    </p>
+    <p>
+        <strong>How we use this Google user data:</strong>
+    </p>
+    <ul>
+        <li><strong>Authentication:</strong> to verify your identity and allow you to log into sitecite.</li>
+        <li><strong>Account linking:</strong> to associate your Google account with your sitecite account,
+            so you can sign in again with the same account.</li>
+        <li><strong>Security and abuse prevention:</strong> to suspend or terminate your access to sitecite
+            if you violate our terms of service.</li>
+    </ul>
+    <p>
+        <strong>Storage:</strong> We store your Google account ID on our servers. This is the only Google user data we
+        keep.
+    </p>
+    <p>
+        <strong>Sharing:</strong> We do <strong>not</strong> share your Google account ID with any other users,
+        third parties, or services. It remains strictly within sitecite.
+    </p>
+    <p>
+        Our use of information received from Google APIs adheres to the
+        <a href="https://developers.google.com/terms/api-services-user-data-policy" target="_blank">
+            Google API Services User Data Policy</a>, including the Limited Use requirements.
+    </p>
+
+    <h3>Discord Sign‑In</h3>
+    <p>
+        When you sign in with Discord, we access and store your Discord account ID for the same purposes
+        (authentication, account linking, and security). We do not access any other Discord profile information.
+        Please review <a href="https://discord.com/privacy" target="_blank">Discord's privacy policy</a>.
+    </p>
+
+    <h2>5. Service providers</h2>
+    <p>
+        We use trusted third‑party services to help run sitecite. They process data on our behalf
+        and are bound by data processing agreements.
+    </p>
+
+    <h3>Cloudflare</h3>
+    <p>
+        We use Cloudflare, a content delivery network and security service, to keep sitecite fast
+        and protected against attacks. When you use the website, Cloudflare may process your
+        IP address and technical browsing information. This is necessary for performance and
+        security purposes.
+    </p>
+    <p>
+        Cloudflare may transfer data to servers outside the European Economic Area or the UK.
+        They use approved legal safeguards (such as Standard Contractual Clauses) to protect
+        your information.
+    </p>
+    <p>
+        You can read Cloudflare's privacy policy at
+        <a href="https://www.cloudflare.com/privacypolicy/" target="_blank">
+            https://www.cloudflare.com/privacypolicy/
+        </a>.
+    </p>
+
+    <h2>6. Legal basis for processing</h2>
+    <p>
+        Under UK and EU data protection law, we process your personal data on these grounds:
+    </p>
+    <ul>
+        <li><strong>Performance of a contract:</strong> to provide the sitecite service you have asked for.</li>
+        <li><strong>Consent:</strong> when you choose to sign in with Google or Discord, you consent to us
+            receiving your account ID.</li>
+        <li><strong>Legitimate interests:</strong> for keeping the service secure, preventing abuse, and improving
+            the service. You can object to processing based on legitimate interests at any time (see Section 7).</li>
     </ul>
 
-    <h2>2. Requesting or removing the data</h2>
+    <h2>7. How long we keep your data</h2>
     <p>
-        If you wish to see all data we store or remove it, you can request a copy of your data by e-mailing us at <strong>sitecite@dantenl.com</strong> or via our Discord server. We may need to ask you to prove that you are the owner of the account. 
-        If you signed up for an instance that is not the official one by sitecite, you should contact the webmaster of said instance.
+        We retain your account information and the content you create (shortened links, quoted text, preferences)
+        for as long as your account is active. If you delete your account or request deletion of your data, we
+        will remove all personal data within 30 days. We may keep anonymised or aggregated information that can
+        no longer be linked to you.
     </p>
-    <h3>3. Agreement</h3>
+
+    <h2>8. Your rights</h2>
     <p>
-        By providing data to sitecite, you agree that we try and store it carefully but that mistakes can happen and storing your data is not without risk. We try and take proper care for storing this data and we ask you do the same. 
-        By using this service (the website and the extension), you agree that your data is stored in accordance with this privacy policy. For any other legal related queries, please send an e-mail and please do also check our <a href="tos">terms of service</a>.
+        You have the right to:
+    </p>
+    <ul>
+        <li><strong>Access</strong> – request a copy of the personal data we hold about you.</li>
+        <li><strong>Rectification</strong> – ask us to correct inaccurate or incomplete data.</li>
+        <li><strong>Erasure</strong> – ask us to delete your data (“right to be forgotten”).</li>
+        <li><strong>Restriction</strong> – ask us to limit how we process your data.</li>
+        <li><strong>Data portability</strong> – receive your data in a structured, machine‑readable format.</li>
+        <li><strong>Objection</strong> – object to processing that is based on legitimate interests.</li>
+    </ul>
+    <p>
+        To exercise any of these rights, email us at <strong>sitecite@dantenl.com</strong>. You can also reach
+        out via our Discord server, but we may still need to confirm your identity through email to protect
+        your account. We may ask you to verify that you are the account owner, for example by confirming the
+        email address linked to your account or providing other account‑specific details.
+    </p>
+    <p>
+        If you signed up on an instance that is not the official sitecite instance, please contact the operator
+        of that instance directly – they are the data controller for your data.
+    </p>
+    <p>
+        If you are based in the UK or the EU and you believe we have not handled your data correctly, you also
+        have the right to lodge a complaint with your local data protection authority.
+    </p>
+
+    <h2>9. Data security</h2>
+    <p>
+        We implement technical and organisational measures to protect your personal data, including HTTPS
+        encryption in transit and salted password hashing. While we take care to secure your data, no method
+        of electronic storage is 100% secure, and we cannot guarantee absolute security.
+    </p>
+
+    <h2>10. International transfers</h2>
+    <p>
+        Our servers are located in the United Kingdom. If you access sitecite from outside the UK, your data
+        will be transferred to and processed in the UK. By using the service, you consent to this transfer.
+        The UK has been recognised by the European Commission as providing an adequate level of data protection,
+        which means that transfers from the EU to the UK are permitted without additional safeguards.
+    </p>
+
+    <h2>11. Children’s privacy</h2>
+    <p>
+        sitecite is not intended for anyone under the age of 13 (or the applicable age of digital consent in your country, if higher). We do not knowingly collect personal data from
+        children. If we discover that a child under 13 has provided us with personal information, we will delete
+        it as quickly as possible.
+    </p>
+
+    <h2>12. Changes to this policy</h2>
+    <p>
+        We may update this privacy policy from time to time. When we make changes, we will revise the “Last
+        updated” date at the top of the page. For significant changes, we will provide a more prominent notice,
+        such as a banner on the website. We encourage you to review this page periodically.
+    </p>
+
+    <h2>13. Your consent and acknowledgement</h2>
+    <p>
+        By using sitecite (the website and the extension), you acknowledge that your data is stored and
+        processed in accordance with this privacy policy. We try to store your data carefully, but mistakes
+        can happen and storing data is never without risk. We ask you to take care of your own account
+        security as well.
+    </p>
+    <p>
+        For any other legal‑related questions, please contact us at
+        <strong>sitecite@dantenl.com</strong> and also review our
+        <a href="../tos">terms of service</a>.
     </p>
 </body>
 

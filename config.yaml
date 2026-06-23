@@ -9,13 +9,13 @@
 
 # Hi! Thanks for checking out sitecite!
 # In this config.yaml file, you can modify some basic settings.
-# THESE SETTINGS REQUIRE A RESTART TO FUNCTION.
+# Keep in mind that it MAY REQUIRE A RESTART to apply some settings.
 # If you're missing any settings, check out the .env file! This should contain Discord OAuth, MySQL info and your abuse.ch key!
 
 
 # The base URL that is accessible to the internet, primarily used to link to things as images in the redirector, as they require absolute URLs.
 # Make sure it does not end with a slash. Example: host: "https://link.example.com"
-host: "http://localhost:9404"
+host: "https://sitecite.example.com"
 
 # On what localhost address this shall be available. This is important for eventually opening it to the public
 port: 9404
@@ -28,3 +28,17 @@ whitelist: true
 # If this is set to false, a proper alternative needs to be provided, such as OAuth with Discord (otherwise it is impossible to sign up)
 # options: true | anything else for false
 username_accounts: true
+
+# Choose how many logs to show, comes in three levels
+# 0: no logging, apart from start up and shut down messages and fatal errors
+# 1: bear neccessities; this only includes errors that didn't kill the program
+# for example: oauth failing for a user because an error occured communicating with discord
+# 2: level 1 + warnings; this includes things that are nice to know off but not required
+# for example if the sql is slower than expected or if a user got ratelimited.
+# 3: level 2 + general logging
+# for example if a user creates a link and signs up or a user signing up (with or without whitelist)
+logging_level: 3
+
+# If you wish to store your logs to a .log file, you can!
+# Leave empty if you do not want to log things to a file
+log_file: "sitecite.log"

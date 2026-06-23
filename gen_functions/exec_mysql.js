@@ -1,5 +1,6 @@
 const mysql = require("mysql2/promise")
-require('dotenv').config()
+const logger = require("../gen_functions/logger")
+require('dotenv').config({ quiet: true})
 
 module.exports = {
     /**
@@ -36,14 +37,14 @@ module.exports = {
 
                 const duration = Date.now() - startTime;
                 if (duration > 1000) {
-                    console.warn(`Slow query (${duration}ms): ${query.substring(0, 100)}...`);
+                    logger.warn(`Slow query (${duration}ms): ${query.substring(0, 100)}...`);
                 }
 
                 resolve(results)
                 return results;
 
             } catch (error) {
-                console.error('Query failed:', error);
+                logger.error("Query failed:", error)
                 reject(error)
                 throw error;
 
@@ -52,7 +53,7 @@ module.exports = {
                     try {
                         conn.release();
                     } catch (releaseError) {
-                        console.error('Error releasing connection:', releaseError);
+                        logger.error('Error releasing connection:', releaseError);
                     }
                 }
                 resolve(true)

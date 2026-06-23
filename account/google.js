@@ -4,7 +4,8 @@ const crypto = require('crypto');
 const permittedAccounts = require("../whitelist");
 const fs = require('fs');
 const yaml = require("yaml");
-require('dotenv').config()
+const logger = require("../gen_functions/logger")
+require('dotenv').config({ quiet: true})
 
 const oAuthGoogle = async (req, res) => {
     if (
@@ -58,7 +59,7 @@ const oAuthGoogle = async (req, res) => {
     })
 
     if (oauthdata.ok == false) {
-        console.error(await oauthdata)
+        logger.error("[GOOGLE OAUTH2] Could not fetch token", await oauthdata, req)
         res.status(500).json({ success: false, message: "Something went wrong during OAuth2." })
         return
     }
@@ -77,7 +78,7 @@ const oAuthGoogle = async (req, res) => {
     })
 
     if (userReq.ok == false) {
-        console.error(await userReq)
+        logger.error("[GOOGLE OAUTH2] Could not fetch user profile", await userReq, req)
         res.status(500).json({ success: false, message: "Something went wrong while retrieving your data." })
         return
     }
@@ -96,7 +97,8 @@ const oAuthGoogle = async (req, res) => {
                 <h1>Your account is not whitelisted! Please contact the webmaster if you believe this to be a mistake!</h1>
                 <p>Google ID: ${userFull.id}</p>
             `);
-            console.log("User tried to sign up with Google, but is not whitelisted! User ID:", userFull.id)
+
+            logger.log("[WHITELIST] User tried to sign up/log in with Google, but is not whitelisted. User ID:", userFull.id)
             return
         }
     }
@@ -128,6 +130,8 @@ const oAuthGoogle = async (req, res) => {
         maxAge: 60 * 60 * 1000
         // 1 hour
     });
+
+    logger.log("[ACCOUNT] User signed in using Google. IP:", req.ip, "Account ID:", user[0].id)
 
     res.status(303).redirect("../")
     return
