@@ -2,9 +2,10 @@
 
 Welcome to sitecite! If you wish to merely check it out, use [the website](https://sitecite.dantenl.com). It's currently available for [Firefox](https://addons.mozilla.org/en-GB/firefox/addon/sitecite/) and [Chrome](https://chromewebstore.google.com/detail/nhadodoajmnpakkgidheifkfibphlghm/).
 
-This repo is mainly intended for if you wish to self host AND build it from scratch! If you don't want the latter: check out the [Docker version](https://github.com/sitecite/server-docker).
+This repo is mainly intended for if you wish to self host sitecite! If you want to contribute to the code: check out the [the main server repo](https://github.com/sitecite/server).
 
-**Need help?** You can join the [Discord server](https://discord.gg/rPBE2B7dng) or create an issue on the Github Issues page.
+> [!TIP]
+> **Need help?** You can join the [Discord server](https://discord.gg/rPBE2B7dng) or create an issue on the Github Issues page.
 
 # Features
 
