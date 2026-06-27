@@ -1,11 +1,14 @@
 const exec_mysql = require("../gen_functions/exec_mysql");
-const pool = require("../server")
+const pool = require("../db/pool")
 const crypto = require('crypto');
 const permittedAccounts = require("../whitelist");
 const fs = require('fs');
 const yaml = require("yaml");
 const logger = require("../gen_functions/logger")
 require('dotenv').config({ quiet: true})
+
+const yamlConfig = yaml.parse(fs.readFileSync("./config.yaml", 'utf8'));
+const whitelist = yamlConfig.whitelist
 
 const oAuthGoogle = async (req, res) => {
     if (
@@ -87,9 +90,6 @@ const oAuthGoogle = async (req, res) => {
     const userFull = await userReq.json()
 
     // check if user is on whitelist
-
-    const yamlConfig = await fs.readFileSync("./config.yaml", 'utf8')
-    const whitelist = yaml.parse(yamlConfig).whitelist
     if (whitelist === true) {
         if (!permittedAccounts.google.includes(userFull.id)) {
             // block unwanted accounts from signing up

@@ -1,6 +1,6 @@
 const exec_mysql = require("../gen_functions/exec_mysql");
 const { fontList } = require("../api/fontlist")
-const pool = require("../server")
+const pool = require("../db/pool")
 const crypto = require('crypto');
 
 const createToken = async (req, res) => {
@@ -61,39 +61,12 @@ const createToken = async (req, res) => {
 }
 
 const validateToken = async (req, res) => {
-    if (!req.headers.authorization) {
-        return res.status(403).json({ 
-            success: false, 
-            message: "No credentials sent. (empty authorization headers?)" 
-        });
-        return
-    }
-
-    const token = req.headers.authorization.replace("Bearer ", "")
-
-    const tokenHash = crypto.createHash('sha256').update(token).digest('hex')
-
-    const tokenSearch = await exec_mysql.executeQuery(null, `
-            SELECT user_id, expire 
-            FROM user_ext_tokens
-            WHERE token = ? AND expire > ?
-        `, [tokenHash, Math.round(Date.now() / 1000)], pool)
-
-    if (!tokenSearch.length) {
-        // no matching tokens found, user is not signed in
-        res.status(401).json({
-            success: false,
-            message: "Invalid token. Maybe it expired?",
-            data: {}
-        })
-        return
-    }
     res.status(200).json({
         success: true,
         message: "Signed in.",
         data: {
-            id: tokenSearch[0].user_id,
-            expire: tokenSearch[0].expire
+            id: req.userId,
+            expire: req.expire
         }
     })
 }

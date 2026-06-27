@@ -1,9 +1,11 @@
 const express = require('express');
 const exec_mysql = require('../gen_functions/exec_mysql');
 const crypto = require("crypto")
-const pool = require('../server');
+const pool = require("../db/pool");
 
 const router = express.Router();
+
+const { authenticateCookie, authenticateToken, authenticateCookieToken } = require("./authMiddleware")
 
 router.use('/hello', function (req, res, next) {
     res.setHeader("Access-Control-Allow-Origin", "*");
@@ -15,7 +17,7 @@ const { getHello } = require("./hello")
 router.get('/hello', getHello);
 
 const getStatus = require("./status")
-router.get('/status', getStatus);
+router.get('/status', authenticateCookie, getStatus);
 
 // allow cors request but only for GET
 router.use('/style', function (req, res, next) {
@@ -29,8 +31,8 @@ router.use('/style', function (req, res, next) {
 
 });
 const { getStyle, postStyle} = require("./style")
-router.get('/style', getStyle);
-router.post('/style', postStyle);
+router.get('/style', authenticateCookieToken, getStyle);
+router.post('/style', authenticateCookie, postStyle);
 
 router.use('/image', function (req, res, next) {
     res.setHeader("Access-Control-Allow-Origin", "*");
@@ -40,7 +42,7 @@ router.use('/image', function (req, res, next) {
 });
 const { createImage, createImageFromText } = require("./image")
 router.get('/image/:code', createImage);
-router.post('/image', createImageFromText);
+router.post('/image', authenticateToken, createImageFromText);
 
 router.use('/fontlist', function (req, res, next) {
     res.setHeader("Access-Control-Allow-Origin", "*");
@@ -72,11 +74,11 @@ router.get('/test', (req, res) => {
 
 // get recently generated urls
 const { getLinks }  = require("./fetchlink")
-router.get('/getlinks', getLinks);
+router.get('/getlinks', authenticateCookie, getLinks);
 
 // remove a specific url
 const { removeLink }  = require("./removeurl")
-router.post('/removeurl', removeLink);
+router.post('/removeurl', authenticateCookie, removeLink);
 
 // allow cors requests since theyre from the extension
 router.use('/token', function (req, res, next) {
@@ -86,8 +88,8 @@ router.use('/token', function (req, res, next) {
     next()
 });
 const { createToken, validateToken } = require("./token")
-router.post("/token/create", createToken)
-router.get("/token/validate", validateToken)
+router.post("/token/create", authenticateCookie, createToken)
+router.get("/token/validate", authenticateToken, validateToken)
 
 router.use('/shorten', function (req, res, next) {
     res.setHeader("Access-Control-Allow-Origin", "*");
@@ -96,6 +98,6 @@ router.use('/shorten', function (req, res, next) {
     next()
 });
 const { shortenUrl } = require("./shorten")
-router.post("/shorten", shortenUrl)
+router.post("/shorten", authenticateToken, shortenUrl)
 
 module.exports = router;

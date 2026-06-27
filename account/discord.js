@@ -1,11 +1,14 @@
 const exec_mysql = require("../gen_functions/exec_mysql");
-const pool = require("../server")
+const pool = require("../db/pool")
 const crypto = require('crypto');
 const permittedAccounts = require("../whitelist");
 const fs = require('fs');
 const yaml = require("yaml");
 const logger = require("../gen_functions/logger")
 require('dotenv').config({ quiet: true})
+
+const yamlConfig = yaml.parse(fs.readFileSync("./config.yaml", 'utf8'));
+const whitelist = yamlConfig.whitelist
 
 const oAuthDiscord = async (req, res) => {
     // first, fetch .env variables
@@ -98,8 +101,6 @@ const oAuthDiscord = async (req, res) => {
     const userFull = await userReq.json()
 
     // check if user is on whitelist using the config file
-    const yamlConfig = await fs.readFileSync("./config.yaml", 'utf8')
-    const whitelist = yaml.parse(yamlConfig).whitelist
     if (whitelist === true) {
         if (!permittedAccounts.discord.includes(userFull.id)) {
             // if the whitelist doesn't include the id by the user, we should send a basic html page

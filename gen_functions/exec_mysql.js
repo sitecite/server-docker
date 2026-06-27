@@ -48,7 +48,8 @@ module.exports = {
                 reject(error)
                 throw error;
 
-            } finally {
+            } 
+            finally {
                 if (shouldReleaseConnection && conn && typeof conn.release === 'function') {
                     try {
                         conn.release();
@@ -56,7 +57,6 @@ module.exports = {
                         logger.error('Error releasing connection:', releaseError);
                     }
                 }
-                resolve(true)
             }
         })
     },

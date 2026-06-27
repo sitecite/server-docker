@@ -40,43 +40,43 @@
     </p>
 
     <p>
-        You can install it for <a href="https://addons.mozilla.org/en-GB/firefox/addon/sitecite/" target="_blank" rel="noopener noreferrer">Firefox</a> or <a href="https://chromewebstore.google.com/detail/sitecite/nhadodoajmnpakkgidheifkfibphlghm" target="_blank" rel="noopener noreferrer">Chrome</a>.
-        Want to host sitecite for yourself? Be sure to check out the <a href="https://github.com/sitecite/server/" target="_blank" rel="noopener noreferrer">source code!</a>
+        You can install it for <a href="../r/firefox" target="_blank" rel="noopener noreferrer">Firefox</a> or <a href="../r/chrome" target="_blank" rel="noopener noreferrer">Chrome</a>.
+        Want to host sitecite for yourself? Be sure to check out the <a href="https://github.com/sitecite/server/" target="_blank" rel="noopener noreferrer">source code!</a> Also, check out who and what made sitecite possible at <a href="../credits" target="_blank" rel="noopener noreferrer">the credits page</a>!
     </p>
 
     <p>
-        Using sitecite means you agree to the <a href="/privacy" target="_blank" rel="noopener noreferrer">privacy policy</a> and the <a href="tos" target="_blank" rel="noopener noreferrer">terms of service</a>. 
+        Using sitecite means you agree to the <a href="../privacy" target="_blank" rel="noopener noreferrer">privacy policy</a> and the <a href="../tos" target="_blank" rel="noopener noreferrer">terms of service</a>. 
         These may not apply if the instance is not on the <a href="https://sitecite.dantenl.com" target="_blank" rel="noopener noreferrer">official website</a>.
     </p>
 
     <div>
-        <button onclick="window.open('https://addons.mozilla.org/en-GB/firefox/addon/sitecite/', '_blank');">download for firefox</button>
-        <button onclick="window.open('https://chromewebstore.google.com/detail/sitecite/nhadodoajmnpakkgidheifkfibphlghm', '_blank');">download for chrome</button>
+        <button onclick="window.open('../r/firefox', '_blank');" class="bordered">download for firefox</button>
+        <button onclick="window.open('../r/chrome', '_blank');" class="bordered">download for chrome</button>
     </div>
     <br>
 
 
-    <div id="sign-in-btns">
+    <span id="sign-in-btns">
         <a id="discord-login" href="/account/discord" style="display: none;">sign in with discord</a>
         <a id="google-login" href="/account/google" style="display: none;">sign in with google</a>
         <br>
-    </div>
+    </span>
 
     <form id="login-form" style="display: none;">
         <div>
             <label for="username">Username:</label>
             <br>
-            <input type="text" id="username" name="username" required autocomplete="username">
+            <input type="text" id="username" name="username" required autocomplete="username" class="bordered">
         </div>
         <div>
             <label for="password">Password:</label>
             <br>
-            <input type="password" id="password" name="password" required autocomplete="current-password">
+            <input type="password" id="password" name="password" required autocomplete="current-password" class="bordered">
         </div>
         <div>
             <br>
-            <button type="submit" value="signin">Log in</button>
-            <button type="submit" value="signup">Sign up</button>
+            <button type="submit" value="signin" class="bordered">Log in</button>
+            <button type="submit" value="signup" class="bordered">Sign up</button>
         </div>
         <div id="message"></div>
     </form>
@@ -92,22 +92,22 @@
 
                 <label for="bg-color">Background:</label>
                 <br>
-                <input type="text" class="coloris-background" id="bg-color" name="bg-color" data-coloris>
+                <input type="text" class="coloris-background bordered" id="bg-color" name="bg-color" data-coloris>
             </div>
             <div>
                 <label for="color">Text:</label>
                 <br>
-                <input type="text" class="coloris-text" id="color" name="color" data-coloris>
+                <input type="text" class="coloris-text bordered" id="color" name="color" data-coloris>
             </div>
             <div>
                 <label for="font">Font:</label>
                 <br>
-                <select name="font-selector" id="font-selector"></select>
+                <select name="font-selector" id="font-selector" class="bordered"></select>
             </div>
             <div>
                 <br>
-                <button type="submit">Save</button>
-                <button type="reset">Reset</button>
+                <button type="submit" class="bordered">save</button>
+                <button type="reset" class="bordered constant">reset</button>
 
             </div>
             <br>
@@ -116,9 +116,9 @@
         <hr>
 
         <p>To use the web extension, you need to provide it with an API key. You can only view this once, after which you will need to regenerate it. <b>DO NOT SHARE IT!</b></p>
-        <div id="api-key" class="secretkeeper">
+        <div id="api-key" class="secretkeeper bordered">
             <p class="secret hidden" id="secret">(hidden for security)</p>
-            <button class="copy-button" id="copy-button" disabled>copy</button>
+            <button class="copy-button bordered" id="copy-button" disabled>copy</button>
         </div>
         <p>If you regenerate your key, you will sign out of any active web extension sessions. <a href="#" id="regenerate">Regenerate key?</a></p>
 
@@ -127,20 +127,20 @@
         <p>Here you can view some links you recently shortened, or you can remove them.</p>
         <div id="link-grid" class="item-grid">
             <!-- all urls -->
-            <div class="item" id="intro-item">
+            <div class="item bordered" id="intro-item">
                 <div class="item-text">(Quote and shorten using the extension, and it will show up here!)</div>
                 <div class="item-management">
                     sitecite
                     <div>
-                        <button disabled>copy</button>
-                        <button disabled>&times;</button>
+                        <button class="bordered" disabled>copy</button>
+                        <button class="bordered" disabled>&times;</button>
                     </div>
                 </div>
             </div>
         </div>
 
         <div style="display: flex; justify-content: center; margin-top: 0.5rem;">
-            <button id="load-more-button">Load more</button>
+            <button id="load-more-button" class="bordered">Load more</button>
         </div>
     </div>
     

@@ -1,7 +1,8 @@
 const logger = require("./gen_functions/logger")
+const { sanitizeRequest } = require("./gen_functions/sanitize")
 
 const errorHandler = (err, req, res, next) => {
-    logger.error("An error occured when a resource was requested", err, req)
+    logger.error("An error occured when a resource was requested", err, sanitizeRequest(req))
     res.status(500).send('Something went wrong! Please try again later :)');
 };
 

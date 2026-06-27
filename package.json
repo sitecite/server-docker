@@ -1,7 +1,8 @@
 {
   "name": "sitecite",
-  "version": "1.5.0",
+  "version": "1.6.0",
   "description": "Simple web extension to easily quote and link to websites on social media, by utilising embeds! Not only that, but it is quite customisable, with text colour, font and background all being able to be changed!",
+  "homepage": "https://sitecite.dantenl.com",
   "main": "server.js",
   "scripts": {
     "dev": "nodemon server.js",
@@ -9,7 +10,7 @@
   },
   "keywords": [],
   "author": "sitecite-team",
-  "license": "ISC",
+  "license": "GPL-3.0-only",
   "type": "commonjs",
   "devDependencies": {
     "nodemon": "^3.1.14"
@@ -22,8 +23,9 @@
     "express-rate-limit": "^8.4.1",
     "he": "^1.2.0",
     "mysql2": "^3.22.3",
-    "node": "^22.13.0",
     "node-fetch": "^3.3.2",
     "yaml": "^2.9.0"
-  }
+  },
+  "bugs": "https://github.com/sitecite/server/issues",
+  "repository": "github:sitecite/server"
 }

@@ -1,7 +1,10 @@
 const fs = require('fs');
 const yaml = require('yaml');
+const logger = require("../gen_functions/logger")
 
 require('dotenv').config()
+
+const CONFIG = yaml.parse(fs.readFileSync("./config.yaml", 'utf8'));
 
 const getHello = async (req, res) => {
     var discordEnabled = false
@@ -23,13 +26,10 @@ const getHello = async (req, res) => {
         googleEnabled = true
     }
 
-    const yamlConfig = await fs.readFileSync("./config.yaml", 'utf8')
-    const username_accounts = yaml.parse(yamlConfig).username_accounts
-
     const helloJSON = {
         google: googleEnabled,
         discord: discordEnabled,
-        username: username_accounts
+        username: CONFIG.username_accounts
     }
 
     res.status(200).json({

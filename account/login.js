@@ -1,11 +1,14 @@
 const exec_mysql = require("../gen_functions/exec_mysql");
-const pool = require("../server")
+const pool = require("../db/pool")
 const crypto = require('crypto');
 const permittedAccounts = require("../whitelist");
 const fs = require('fs');
 const yaml = require("yaml");
 const logger = require("../gen_functions/logger")
 require('dotenv').config({ quiet: true})
+
+const yamlConfig = yaml.parse(fs.readFileSync("./config.yaml", 'utf8'));
+const whitelist = yamlConfig.whitelist
 
 const signIn = async (req, res) => {
     // handle a sign in request
@@ -17,7 +20,7 @@ const signIn = async (req, res) => {
     // check if username accounts are enabled
     const username_accounts = yaml.parse(yamlConfig).username_accounts
     
-    if (!username_accounts === true) {
+    if (username_accounts === false) {
         // signing in with username and password is disabled
         res.status(401).json({
             success: false,
@@ -104,7 +107,7 @@ const signUp = async (req, res) => {
     const yamlConfig = await fs.readFileSync("./config.yaml", 'utf8')
     const username_accounts = yaml.parse(yamlConfig).username_accounts
 
-    if (!username_accounts === true) {
+    if (username_accounts === false) {
         // signing in with username and password is disabled
         res.status(401).json({
             success: false,
@@ -147,7 +150,7 @@ const signUp = async (req, res) => {
     } 
 
     // check if whitelisted
-    if(process.env.WHITELIST == "true") {
+    if (whitelist === true) {
         if (!permittedAccounts.general.includes(username)) {
             // block unwanted accounts from signing up
             res.status(403).json({

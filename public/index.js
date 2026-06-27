@@ -317,13 +317,13 @@ async function loadUrls() {
 		const urlObj = new URL(url.link)
 		const host = urlObj.host
 		document.getElementById("link-grid").innerHTML += `
-			<div class="item">
+			<div class="item bordered">
                 <div class="item-text">${url.text}</div>
                 <div class="item-management">
                     <a href="/l/${url.code}" target="_blank" rel="noopener noreferrer">${host}</a>
                     <div>
-                        <button class='_copyUrl' data-code='${url.code}'>copy</button>
-                        <button class='_deleteUrl' data-code='${url.code}'>&times;</button>
+                        <button class='_copyUrl bordered' data-code='${url.code}'>copy</button>
+                        <button class='_deleteUrl bordered' data-code='${url.code}'>&times;</button>
                     </div>
                 </div>
             </div>

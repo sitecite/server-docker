@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>credits | sitecite</title>
+
+    <!-- Normal and sane OpenGraph -->
+    <meta property="og:title" content="credits" />
+    <meta property="og:site_name" content="sitecite" />
+    <meta property="og:type" content="website" />
+    <meta property="og:description" content="credits, showing all those who made sitecite possible!" />
+    
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="./favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="./favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="./favicon/favicon-16x16.png">
+    <link rel="manifest" href="./favicon/site.webmanifest">
+    
+    <!-- Imports -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Credits</h1>
+    <b>Thanks to all the following people who made sitecite possible!</b>
+    <p>If you're not on the credits page, but think you should be, please create a ticket on the <a href="../r/discord" target="_blank" rel="noopener noreferrer">Discord server</a>!</p>
+    <h2>Developers</h2>
+    <ul>
+        <li><a href="https://github.com/dante-nl" target="_blank" rel="noopener noreferrer">dante_nl</a> - creator of sitecite</li>
+        <li>
+            <a href="https://github.com/luckvintage" target="_blank" rel="noopener noreferrer">Andrew Peacock</a>
+            - maintainer of the Docker version
+        </li>
+    </ul>
+    <h2>Node.js libraries used</h2>
+    <p>If you want to use any of these yourself, click on the name and it will open the npm page in a new tab</p>
+    <ul>
+        <li><a href="https://www.npmjs.com/package/canvas" target="_blank" rel="noopener noreferrer">node-canvas</a>: used for generating the images</li>
+        <li><a href="https://www.npmjs.com/package/cookie-parser" target="_blank" rel="noopener noreferrer">cookie-parser</a>: used for authentication with signed cookies</li>
+        <li><a href="https://www.npmjs.com/package/dotenv" target="_blank" rel="noopener noreferrer">dotenv</a>: used for storing credentials, such as API keys</li>
+        <li><a href="https://www.npmjs.com/package/express" target="_blank" rel="noopener noreferrer">express</a>: used for turning the plain JS files into a webserver</li>
+        <li><a href="https://www.npmjs.com/package/express-rate-limit" target="_blank" rel="noopener noreferrer">express-rate-limit</a>: used to rate limit requests</li>
+        <li><a href="https://www.npmjs.com/package/he" target="_blank" rel="noopener noreferrer">he</a>: used for HTML parsing, making sure that (in theory) no scripts should be able to be executed on the redirect page</li>
+        <li><a href="https://www.npmjs.com/package/mysql2" target="_blank" rel="noopener noreferrer">mysql2</a>: used for communicating with the MySQL database</li>
+        <li><a href="https://www.npmjs.com/package/node-fetch" target="_blank" rel="noopener noreferrer">node-fetch</a>: used to ensure compatibility with older versions of node.js by adding fetch()</li>
+        <li><a href="https://www.npmjs.com/package/yaml" target="_blank" rel="noopener noreferrer">yaml</a>: used for reading the config file</li>
+    </ul>
+    <h2>Fonts used</h2>
+    <noscript>
+        <p>The lists of fonts used requires JavaScript to be enabled, as this list is dynamic.</p>
+    </noscript>
+    <ul id="fontlist"></ul>
+
+    <h2>Other important projects</h2>
+    <ul>
+        <li><a href="https://nodejs.org/en" target="_blank" rel="noopener noreferrer">NodeJS</a>: Without NodeJS, this project would have looked quite different. Probably not in JS.</li>
+        <li><a href="https://www.mysql.com/" target="_blank" rel="noopener noreferrer">MySQL</a>: MySQL is used for the management of the database, managing things like the generated links.</li>
+    </ul>
+
+    <script>
+        async function loadFontCredit() {
+            const fontlistElement =  document.getElementById("fontlist")
+            const fontlistReq = await fetch("../api/fontlist")
+            if (!fontlistReq.ok) {
+                fontlistElement.innerText = "Could not fetch fonts at the moment; try again later."
+                return
+            }
+
+            fontlist = await fontlistReq.json()
+
+            if (!fontlist.success) {
+                fontlistElement.innerText = "Could not fetch fonts at the moment: "+fontlist.message
+                return
+            }
+
+            fontlist.data.fontList.forEach(font => {
+                console.log(font)
+                fontlistElement.innerHTML += `<li>${font.name}:</li><p>${font.credit}</p>`
+            });
+        }
+
+        loadFontCredit()
+    </script>
+</body>
+</html>

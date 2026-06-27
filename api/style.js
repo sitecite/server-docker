@@ -1,56 +1,10 @@
 const exec_mysql = require("../gen_functions/exec_mysql");
 const { fontList } = require("../api/fontlist")
-const pool = require("../server")
+const pool = require("../db/pool")
 const crypto = require('crypto');
 
 const getStyle = async (req, res) => {
-    try {
-        req.signedCookies.token || req.headers.authorization.replace("Bearer ", "")
-    } catch(e) {
-        console.log(e)
-        res.status(401).json({
-            success: false,
-            message: "No token provided via a signed cookie or Authorization header.",
-            data: {}
-        })
-        return
-    }
-    const token = req.signedCookies.token || req.headers.authorization.replace("Bearer ", "")
-    if (!token) {
-        res.status(401).json({
-            success: false,
-            message: "No token provided via a signed cookie or Authorization header.",
-            data: {}
-        })
-        return
-    }
-
-    // only hashes stored so we need to look for hash
-    const tokenHash = crypto.createHash('sha256').update(token).digest('hex')
-    const tokenSearch = await exec_mysql.executeQuery(null, `
-            SELECT user_id
-            FROM user_web_tokens 
-            WHERE token = ? AND expire > ?
-
-            UNION ALL
-
-            SELECT user_id 
-            FROM user_ext_tokens 
-            WHERE token = ? AND expire > ?
-        `, [tokenHash, Math.round(Date.now() / 1000), tokenHash, Math.round(Date.now() / 1000)], pool)
-
-    if (!tokenSearch.length) {
-        // no matching tokens found, user is not signed in
-        // maybe ext token tho?
-        res.status(401).json({
-            success: false,
-            message: "Invalid token. Maybe it expired?",
-            data: {}
-        })
-        return
-    }
-
-    const id = tokenSearch[0].user_id
+    const id = req.userId
 
     const style = await exec_mysql.executeQuery(null, `
             SELECT bg_color, color, font
@@ -83,34 +37,7 @@ const getStyle = async (req, res) => {
 }
 
 const postStyle = async (req, res) => {
-    const token = req.signedCookies.token
-    if (!token) {
-        res.status(401).json({
-            success: false,
-            message: "No token provided via a signed cookie.",
-        })
-        return
-    }
-
-    // only hashes stored so we need to look for hash
-    const tokenHash = crypto.createHash('sha256').update(token).digest('hex')
-
-    const tokenSearch = await exec_mysql.executeQuery(null, `
-            SELECT user_id
-            FROM user_web_tokens
-            WHERE token = ? AND expire > ?
-        `, [tokenHash, Math.round(Date.now() / 1000)], pool)
-
-    if (!tokenSearch.length) {
-        // no matching tokens found, user is not signed in
-        res.status(401).json({
-            success: false,
-            message: "Invalid token. Maybe it expired?",
-        })
-        return
-    }
-
-    const id = tokenSearch[0].user_id
+    const id = req.userId
 
     const textColor = req.body.color
     const backgroundColor = req.body.backgroundColor

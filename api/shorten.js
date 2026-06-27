@@ -1,7 +1,7 @@
 const express = require('express');
 const exec_mysql = require('../gen_functions/exec_mysql');
 const crypto = require("crypto")
-const pool = require('../server');
+const pool = require("../db/pool");
 const logger = require("../gen_functions/logger")
 
 function randomAlphanumeric(length) {
@@ -15,34 +15,7 @@ function randomAlphanumeric(length) {
 }
 
 async function shortenUrl(req, res) {
-    if (!req.headers.authorization) {
-        return res.status(403).json({
-            success: false,
-            message: "No credentials sent. (empty authorization headers?)"
-        });
-        return
-    }
-
-    const token = req.headers.authorization.replace("Bearer ", "")
-
-    const tokenHash = crypto.createHash('sha256').update(token).digest('hex')
-
-    const tokenSearch = await exec_mysql.executeQuery(null, `
-            SELECT user_id, expire 
-            FROM user_ext_tokens
-            WHERE token = ? AND expire > ?
-        `, [tokenHash, Math.round(Date.now() / 1000)], pool)
-
-    if (!tokenSearch.length) {
-        // no matching tokens found, user is not signed in
-        res.status(401).json({
-            success: false,
-            message: "Invalid token. Maybe it expired?",
-        })
-        return
-    }
-
-    const id = tokenSearch[0].user_id
+    const id = req.userId
 
     if (!req.body || !req.body.link || !req.body.text) {
         res.status(400).json({

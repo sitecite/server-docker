@@ -4,11 +4,12 @@ const rateLimit = require('express-rate-limit');
 const fetch = require("node-fetch");
 const mysql = require("mysql2/promise");
 const { styleText } = require('node:util');
-const fs = require('fs');
+const fs = require('fs').promises;
 const refresh = require("./gen_functions/refresh")
 const crypto = require('crypto');
 const yaml = require("yaml")
 const logger = require("./gen_functions/logger.js")
+const pool = require("./db/pool.js")
 
 const dbSetup = require("./db-setup.cjs")
 
@@ -97,6 +98,9 @@ async function main() {
     const linkManager = require('./link/router.js');
     app.use('/l/', linkManager);
 
+    const redirectManager = require('./redirect/router.js');
+    app.use('/r/', redirectManager);
+
     //* Middleware 
 
     // 404 page
@@ -108,7 +112,7 @@ async function main() {
     const errorHandler = require('./errorHandler');
     app.use(errorHandler);
 
-    const yamlConfig = await fs.readFileSync("./config.yaml", 'utf8')
+    const yamlConfig = await fs.readFile("./config.yaml", 'utf8')
     const port = yaml.parse(yamlConfig).port
 
     http.listen(port, async () => {
@@ -144,20 +148,5 @@ function terminator(sig) {
     }
 }
 
-// create new mysql pool for connections
-const pool = mysql.createPool({
-    host: process.env.MYSQL_HOST,
-    user: process.env.MYSQL_USER,
-    password: process.env.MYSQL_PASSWORD,
-    port: process.env.MYSQL_PORT,
-    database: process.env.MYSQL_DATABASE,
-    // connectionLimit: 10,
-    connectTimeout: 20000,
-    connectionLimit: 10,
-    waitForConnections: true,
-    queueLimit: 0,
-})
-
-module.exports = pool
 
 main()

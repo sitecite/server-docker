@@ -69,11 +69,6 @@ h1.title {
 
 .secretkeeper {
     display: flex;
-    /* border: solid var(--color); */
-    border-top: 1px solid var(--color);
-    border-bottom: 3px solid var(--color); 
-    border-left: 1px solid var(--color);
-    border-right: 3px solid var(--color);
     flex-wrap: nowrap;
     flex-direction: row;
     align-content: stretch;
@@ -90,12 +85,15 @@ h1.title {
     font-style: italic;
 }
 
-/* nicer input */
-input {
+/* simple style to handle the default borders */
+.bordered {
     border-top: 1px solid var(--color);
     border-bottom: 3px solid var(--color);
     border-left: 1px solid var(--color);
     border-right: 3px solid var(--color);
+}
+/* nicer input */
+input {
     font-family: var(--font-family);
     background: none;
     color: var(--color);
@@ -104,10 +102,6 @@ input {
 
 /* font selector */
 select {
-    border-top: 1px solid var(--color);
-    border-bottom: 3px solid var(--color);
-    border-left: 1px solid var(--color);
-    border-right: 3px solid var(--color);
     font-family: var(--font-family);
     background: none;
     color: var(--color);
@@ -115,10 +109,6 @@ select {
 }
 
 button {
-    border-top: 1px solid var(--color);
-    border-bottom: 3px solid var(--color);
-    border-left: 1px solid var(--color);
-    border-right: 3px solid var(--color);
     font-family: var(--font-family);
     background: none;
     color: var(--color);
@@ -137,10 +127,6 @@ button:active {
 }
 
 button:active:disabled {
-    border-top: 1px solid var(--color);
-    border-bottom: 3px solid var(--color);
-    border-left: 1px solid var(--color);
-    border-right: 3px solid var(--color);
     cursor: not-allowed;
 }
 
@@ -171,10 +157,6 @@ keyboard shortcut buttons
 
 kbd {
     padding: 1px;
-    border-left: 2px solid var(--color);
-    border-right: 2px solid var(--color);
-    border-top: 1px solid var(--color);
-    border-bottom: 4px solid var(--color);
     font-family: monospace;
 }
 
@@ -193,10 +175,6 @@ kbd {
 
 /* Each item becomes a flex column container */
 .item-grid .item {
-    border-top: 1px solid var(--color);
-    border-bottom: 3px solid var(--color);
-    border-left: 1px solid var(--color);
-    border-right: 3px solid var(--color);
     font-family: var(--font-family);
     background: none;
     color: var(--color);
@@ -215,6 +193,7 @@ kbd {
     border: 1px solid var(--color);
     padding: 2px;
     flex: 1;
+    overflow: scroll;
     /* grows to fill remaining space */
 }
 
@@ -237,4 +216,12 @@ kbd {
     /* make the copy and close button inline */
     display: inline-flex;
     gap: 2px;
+}
+
+
+/* constant class, one that never changes to the fancy background colours */
+.constant {
+    background-color: #fff;
+    color: #000;
+    border-color: #000;
 }

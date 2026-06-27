@@ -1,5 +1,5 @@
 const exec_mysql = require("../gen_functions/exec_mysql");
-const pool = require("../server")
+const pool = require("../db/pool")
 const crypto = require('crypto');
 
 const removeLink = async (req, res) => {
@@ -15,38 +15,7 @@ const removeLink = async (req, res) => {
         return
     }
 
-    // checks if user is signed in
-
-    const token = req.signedCookies.token
-    if (!token) {
-        res.status(401).json({
-            success: false,
-            message: "No token provided via a signed cookie.",
-            data: {}
-        })
-        return
-    }
-
-    // only hashes stored so we need to look for hash
-    const tokenHash = crypto.createHash('sha256').update(token).digest('hex')
-
-    const tokenSearch = await exec_mysql.executeQuery(null, `
-            SELECT user_id, expire 
-            FROM user_web_tokens
-            WHERE token = ? AND expire > ?
-        `, [tokenHash, Math.round(Date.now() / 1000)], pool)
-
-    if (!tokenSearch.length) {
-        // no matching tokens found, user is not signed in
-        res.status(401).json({
-            success: false,
-            message: "Invalid token. Maybe it expired?",
-            data: {}
-        })
-        return
-    }
-
-    const id = tokenSearch[0].user_id
+    const id = req.userId
     const code = req.body.code
 
     const codeSearch = await exec_mysql.executeQuery(null, `SELECT user_id FROM links WHERE code = ?`, [code], pool)
