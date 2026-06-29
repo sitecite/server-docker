@@ -1,6 +1,6 @@
 {
   "name": "sitecite",
-  "version": "1.6.0",
+  "version": "1.6.1",
   "description": "Simple web extension to easily quote and link to websites on social media, by utilising embeds! Not only that, but it is quite customisable, with text colour, font and background all being able to be changed!",
   "homepage": "https://sitecite.dantenl.com",
   "main": "server.js",
